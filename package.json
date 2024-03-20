@@ -17,7 +17,7 @@
     "react-leaflet-markercluster": "^3.0.0-rc1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4",
-    "homepage": "https://esoxape.github.io/"    
+    "homepage": "https://esoxape.github.io/mapsmaps"    
   },
   "scripts": {
     "start": "react-scripts start",

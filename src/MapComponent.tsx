@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { Ticket } from './Ticket.tsx';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster';
 
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
@@ -38,52 +37,44 @@ const customIcons = {
     popupAnchor: [1, -34],
   }),
 };
-
-const MapComponent = () => {
-  const centerPosition = [57.0, 14.5];
-
-  useEffect(() => {
-    // Initially generate tickets
-    Ticket.generateRandomTickets(10000);
-  }, []);
-
-  const Markers = () => {
+const UpdateView = ({ center, zoom }) => {
     const map = useMap();
+  
     useEffect(() => {
-      const markerClusterGroup = L.markerClusterGroup();
-
-      Ticket.tickets.forEach((ticket) => {
-        const marker = L.marker([ticket.lat, ticket.long], { icon: customIcons[ticket.type] })
-          .bindPopup(ticket.type);
-        markerClusterGroup.addLayer(marker);
-      });
-
-      map.addLayer(markerClusterGroup);
-
-      return () => {
-        map.removeLayer(markerClusterGroup);
-      };
-    }, [map]);
-
+      map.setView(center, zoom);
+    }, [center, zoom, map]);
+  
     return null;
   };
-
-  const generateNewMarkers = () => {
-    Ticket.generateRandomTickets(10000);
-    window.location.reload();
+  
+  const Markers = ({ tickets, customIcons }) => {
+    const map = useMap();
+  
+    useEffect(() => {
+      const markerClusterGroup = L.markerClusterGroup();
+  
+      tickets.forEach(ticket => {
+        const marker = L.marker([ticket.lat, ticket.long], { icon: customIcons[ticket.type] || L.Icon.Default })
+          .bindPopup(`Type: ${ticket.type}`);
+        markerClusterGroup.addLayer(marker);
+      });
+  
+      map.addLayer(markerClusterGroup);
+  
+      return () => map.removeLayer(markerClusterGroup);
+    }, [tickets, map, customIcons]);
+  
+    return null;
   };
-
-  return (
-    <>
-      <MapContainer center={centerPosition} zoom={8} style={{ height: '100vh', width: '50vw' }}>
+  
+  const MapComponent = ({ center, zoom, tickets }) => {
+    return (
+      <MapContainer center={center} zoom={zoom} style={{ height: '100vh', width: '50vw' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Markers />
+        <UpdateView center={center} zoom={zoom} />
+        <Markers tickets={tickets} customIcons={customIcons} />
       </MapContainer>
-      <button onClick={generateNewMarkers} style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 1000 }}>
-        Generate New Positions
-      </button>
-    </>
-  );
-};
-
-export default MapComponent;
+    );
+  };
+  
+  export default MapComponent;

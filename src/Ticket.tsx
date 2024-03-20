@@ -3,7 +3,7 @@ export class Ticket {
     long: number;
     type: string;
   
-    static tickets: Ticket[] = Ticket.generateRandomTickets(10000);
+    static tickets: Ticket[] = Ticket.generateRandomTickets(1000);
   
     constructor(lat: number, long: number, type: string) {
       this.lat = lat;
