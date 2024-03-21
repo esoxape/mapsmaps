@@ -55,7 +55,7 @@ const UpdateView = ({ center, zoom }) => {
   
       tickets.forEach(ticket => {
         const marker = L.marker([ticket.lat, ticket.long], { icon: customIcons[ticket.type] || L.Icon.Default })
-          .bindPopup(`Type: ${ticket.type}`);
+          .bindPopup(`Tag: ${ticket.type}`);
         markerClusterGroup.addLayer(marker);
       });
   

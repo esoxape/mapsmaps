@@ -46,7 +46,7 @@ const MapComponentGoogle = ({ center, zoom, tickets }) => { // Use props includi
   }));
 
   const onMarkerClick = (id) => {
-    alert(`Marker ID: ${id}`);
+    alert(`Tag: ${id}`);
   };
 
   return (

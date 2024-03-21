@@ -1,6 +1,7 @@
 {
   "name": "mapsmaps",
   "version": "0.1.0",
+  "homepage": "https://esoxape.github.io/mapsmaps",
   "private": true,
   "dependencies": {
     "@googlemaps/markerclusterer": "^2.5.3",
@@ -16,8 +17,8 @@
     "react-leaflet": "^4.2.1",
     "react-leaflet-markercluster": "^3.0.0-rc1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
-    "homepage": "https://esoxape.github.io/mapsmaps"    
+    "web-vitals": "^2.1.4"
+    
   },
   "scripts": {
     "start": "react-scripts start",
