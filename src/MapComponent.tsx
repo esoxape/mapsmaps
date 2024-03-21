@@ -67,9 +67,12 @@ const UpdateView = ({ center, zoom }) => {
     return null;
   };
   
-  const MapComponent = ({ center, zoom, tickets }) => {
+  const MapComponent = ({ center, zoom, tickets, fullScreen }) => {
+    let widthSetting='50vw';
+    if (fullScreen===true)widthSetting='100vw'
+    if(fullScreen===true)center.lng=center.lng+4;
     return (
-      <MapContainer center={center} zoom={zoom} style={{ height: '100vh', width: '50vw' }}>
+      <MapContainer center={center} zoom={zoom} style={{ height: '100vh', width: widthSetting }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <UpdateView center={center} zoom={zoom} />
         <Markers tickets={tickets} customIcons={customIcons} />

@@ -6,19 +6,18 @@ const containerStyle = {
   height: '100vh'
 };
 
-const center = {
-  lat: 57.0,
-  lng: 14.5
-};
 
 const mapStyles = [
   {
     featureType: "poi",
     elementType: "labels",
-    stylers: [{ visibility: "off" }],
+    stylers: [{ visibility: "off" }],    
   },
 ];
-
+const options = {
+  styles: mapStyles,
+  gestureHandling: 'greedy', // Correct place for gestureHandling
+};
 const clustererOptions = {
   imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
   gridSize: 60,
@@ -55,7 +54,8 @@ const MapComponentGoogle = ({ center, zoom, tickets }) => { // Use props includi
         mapContainerStyle={containerStyle}
         center={center}
         zoom={zoom}
-        options={{ styles: mapStyles }}
+        options={options}
+        
       >
         <MarkerClusterer options={clustererOptions}>
           {(clusterer) => (
