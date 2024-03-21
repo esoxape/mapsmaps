@@ -37,15 +37,22 @@ const customIcons = {
     popupAnchor: [1, -34],
   }),
 };
-const UpdateView = ({ center, zoom }) => {
-    const map = useMap();
-  
-    useEffect(() => {
-      map.setView(center, zoom);
-    }, [center, zoom, map]);
-  
-    return null;
-  };
+const UpdateView = ({ center, zoom, fullScreen }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(center, zoom);
+  }, [center, zoom, map]);
+
+  // Trigger map size invalidation whenever fullScreen changes
+  useEffect(() => {
+    // Delay the invalidateSize call to ensure the container has resized
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+  }, [fullScreen, map]);
+
+  return null;
+};
   
   const Markers = ({ tickets, customIcons }) => {
     const map = useMap();
@@ -68,13 +75,13 @@ const UpdateView = ({ center, zoom }) => {
   };
   
   const MapComponent = ({ center, zoom, tickets, fullScreen }) => {
-    let widthSetting='50vw';
-    if (fullScreen===true)widthSetting='100vw'
-    if(fullScreen===true)center.lng=center.lng+4;
+    console.log("MapComponent fullScreen value:", fullScreen);
+    const widthSetting = fullScreen ? '100vw' : '50vw';
+    console.log("MapComponent fullScreen value:", widthSetting);
     return (
       <MapContainer center={center} zoom={zoom} style={{ height: '100vh', width: widthSetting }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <UpdateView center={center} zoom={zoom} />
+        <UpdateView center={center} zoom={zoom} fullScreen={fullScreen} />
         <Markers tickets={tickets} customIcons={customIcons} />
       </MapContainer>
     );

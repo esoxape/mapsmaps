@@ -5,7 +5,6 @@ import MapComponentGoogle from './MapComponentGoogle.tsx';
 import { Ticket } from './Ticket.tsx'; // Ensure this path is correct
 
 function App() {
-  const initialCenter = { lat: 57.0, lng: 14.5 };
   const [mapCenter, setMapCenter] = useState({ lat: 57.0, lng: 14.5 });
   const [zoomLevel, setZoomLevel] = useState(8);
   const [tickets, setTickets] = useState(Ticket.generateRandomTickets(1000));
@@ -28,11 +27,6 @@ function App() {
   };
   const toggleGoogleMap = () => {
     setShowGoogleMap(prev => !prev);
-    // Reset map center to the initialCenter when hiding the Google Map
-    if (showGoogleMap) {
-      setMapCenter(initialCenter);
-      setZoomLevel(8); // Optionally reset zoom level to default
-    }
   };
   const visibleTickets = tickets.filter(ticket => visibleTypes[ticket.type]);
 
@@ -79,7 +73,7 @@ function App() {
           {showGoogleMap && <MapComponentGoogle center={mapCenter} zoom={zoomLevel} tickets={visibleTickets} />}
         </div>
         <div style={{ flex: 1 }}>
-          <MapComponent center={mapCenter} zoom={zoomLevel} tickets={visibleTickets} fullScreen={showGoogleMap} />
+          <MapComponent center={mapCenter} zoom={zoomLevel} tickets={visibleTickets} fullScreen={!showGoogleMap} />
         </div>
       </div>
     </div>
